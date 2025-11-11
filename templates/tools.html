@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="tools-container">
+
+  <h1 class="page-title">Database Tools</h1>
+  
+
+  <div class="tool-grid">
+
+    <!-- FUNCTION: get_age -->
+    <div class="tool-card">
+      <h2> Get Age</h2>
+      <form method="post" action="{{ url_for('tool_get_age') }}">
+        <label>Date of Birth:</label>
+        <input type="date" name="dob" required>
+        <button class="btn btn-blue" type="submit">Calculate Age</button>
+      </form>
+      <p class="hint">Uses <code>get_age()</code> SQL function</p>
+    </div>
+
+    <!-- FUNCTION: total_evidence -->
+    <div class="tool-card">
+      <h2>🔍 Total Evidence</h2>
+      <form method="post" action="{{ url_for('tool_total_evidence') }}">
+        <label>Case ID:</label>
+        <input type="number" name="case_id" required>
+        <button class="btn btn-blue" type="submit">Get Total</button>
+      </form>
+      <p class="hint">Uses <code>total_evidence()</code> SQL function</p>
+    </div>
+
+    <!-- PROCEDURE: Add_Case_With_Report -->
+<div class="add-case-section">
+  <h2><i class="fa-solid fa-folder-plus"></i> Add Case With Report</h2>
+  <p class="subtitle">Automatically create a new Case entry with its associated Report</p>
+
+  <form method="post" action="{{ url_for('tool_add_case_with_report') }}">
+    <label>Case Title:</label>
+    <input type="text" name="caseTitle" placeholder="Ex: Bank Heist" required>
+
+    <label>Case Description:</label>
+    <textarea name="caseDesc" placeholder="Describe the case"></textarea>
+
+    <label>Report Content:</label>
+    <textarea name="reportContent" placeholder="Enter report content" required></textarea>
+
+    <label>Report Date:</label>
+    <input type="date" name="reportDate">
+
+    <button type="submit" class="execute-btn">Execute Procedure</button>
+  </form>
+
+  <p class="tool-info">Calls <code>Add_Case_With_Report()</code></p>
+</div>
+
+
+    <!-- PROCEDURE: Get_Suspect_Aliases -->
+    <div class="tool-card">
+      <h2> Get Suspect Aliases</h2>
+      <a class="btn btn-blue" href="{{ url_for('tool_suspect_aliases') }}">Run Procedure</a>
+      <p class="hint">Calls <code>Get_Suspect_Aliases()</code></p>
+    </div>
+
+    <!-- TRIGGER LOG -->
+    <div class="tool-card">
+      <h2>⚙️ Evidence Log (Trigger)</h2>
+      <a class="btn btn-blue" href="{{ url_for('evidence_log') }}">View Log Table</a>
+      <p class="hint">Shows entries created by <code>trg_after_evidence_insert</code></p>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

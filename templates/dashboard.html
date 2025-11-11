@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+  <!-- 🟦 Total Cases -->
+  <div class="card">
+    <div class="label">Total Cases</div>
+    <div class="value">{{ cases_count }}</div>
+  </div>
+
+  <!-- 🟩 Evidence by Type -->
+  <div class="card full">
+    <div class="label">Evidence by Type</div>
+    <button class="btn" onclick="toggleTable('evidenceTable')">Show / Hide</button>
+    <div id="evidenceTable" style="display:none;">
+      <table class="table small">
+        <thead>
+          <tr><th>Type</th><th>Count</th></tr>
+        </thead>
+        <tbody>
+          {% for r in evidence_by_type %}
+          <tr>
+            <td>{{ r.Evidence_Type or 'Unknown' }}</td>
+            <td>{{ r.cnt }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🟨 Top Investigators -->
+  <div class="card">
+    <div class="label">Top Investigators</div>
+    <button class="btn" onclick="toggleTable('investigatorsList')">Show / Hide</button>
+    <ul id="investigatorsList" style="display:none;">
+      {% for r in investigator_load %}
+      <li>{{ r.Name }} — {{ r.cnt }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- 🟧 Lab Usage -->
+  <div class="card">
+    <div class="label">Lab Usage</div>
+    <button class="btn" onclick="toggleTable('labList')">Show / Hide</button>
+    <ul id="labList" style="display:none;">
+      {% for r in lab_usage %}
+      <li>{{ r.Lab_Name }} — {{ r.cnt }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- 🟥 Cases With Any Evidence -->
+<div class="card full">
+  <h2>Cases With Any Evidence (EXISTS)</h2>
+  <button class="btn" onclick="toggleTable('casesTable')">Show / Hide</button>
+  <div id="casesTable" style="display:none;">
+    <table class="table">
+      <thead><tr><th>Case_ID</th><th>Title</th></tr></thead>
+      <tbody>
+        {% for r in cases_with_any_evidence %}
+        <tr>
+          <td>{{ r.Case_ID }}</td>
+          <td>{{ r.Title }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 🧠 Toggle Script -->
+<script>
+function toggleTable(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+
+{% endblock %}

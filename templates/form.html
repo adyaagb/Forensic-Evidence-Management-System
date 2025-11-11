@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ name }} — {{ values and 'Edit' or 'New' }}</h1>
+<form method="post" action="{{ values and url_for('update_row', name=name) or url_for('create_row', name=name) }}" class="form">
+  {% for c in spec.columns %}
+    <label>{{ c }}
+      <input name="{{ c }}" value="{{ values[c] if values else '' }}" {{ (c in spec.pk and values) and 'readonly' or '' }}>
+    </label>
+  {% endfor %}
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

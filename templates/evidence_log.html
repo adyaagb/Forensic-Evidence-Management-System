@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Evidence Log</h1>
+<table class="table">
+  <thead>
+    <tr><th>Log_ID</th><th>Evidence_ID</th><th>Action</th><th>Log_Time</th><th>Evidence_Type</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.Log_ID }}</td>
+      <td>{{ r.Evidence_ID }}</td>
+      <td>{{ r.Action }}</td>
+      <td>{{ r.Log_Time }}</td>
+      <td>{{ r.Evidence_Type }}</td>
+      <td>{{ r.Description }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

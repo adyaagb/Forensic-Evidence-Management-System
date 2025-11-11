@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-card">
+  <h2>Sign in</h2>
+  <form method="post" action="{{ url_for('login_post') }}" class="form">
+    <label>Username
+      <input name="username" required>
+    </label>
+    <label>Password
+      <input name="password" type="password" required>
+    </label>
+    <button type="submit">Login</button>
+  </form>
+  <p class="hint">New user? <a class="link" href="{{ url_for('signup') }}">Create an account</a></p>
+</div>
+{% endblock %}

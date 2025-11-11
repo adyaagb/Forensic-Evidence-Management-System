@@ -1,0 +1,101 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forensic Evidence App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  {% if current_user.is_authenticated %}
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1 class="logo">Forensic Evidence</h1>
+    </div>
+    <div class="nav-right">
+      <!-- Dashboard -->
+      <a href="{{ url_for('dashboard') }}" class="nav-btn {% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a>
+
+      <!-- Tables Dropdown -->
+<div class="dropdown">
+  <button class="nav-btn dropdown-toggle">Tables ▾</button>
+  <div class="dropdown-menu">
+    {% for t in ['Case_', 'Evidence', 'Suspect', 'Investigator', 'Lab', 'Report', 'Trial', 'Witness', 'Witnessed', 'Assigned', 'Evidence_Item', 'Suspect_Alias', 'Test_Result', 'Court'] %}
+    <a href="{{ url_for('list_table', name=t) }}">{{ t }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Analytics Dropdown -->
+<div class="dropdown">
+  <button class="nav-btn dropdown-toggle">Analytics ▾</button>
+  <div class="dropdown-menu">
+    <a href="{{ url_for('cases_with_evidence') }}">Cases With Evidence</a>
+    <a href="{{ url_for('evidence_by_case') }}">Evidence By Case</a>
+    <a href="{{ url_for('investigator_workload') }}">Investigator Workload</a>
+  </div>
+</div>
+
+
+      <!-- Tools -->
+      <a href="{{ url_for('tools') }}" class="nav-btn {% if request.endpoint == 'tools' %}active{% endif %}">Tools</a>
+
+      <!-- Logs -->
+      <a href="{{ url_for('evidence_log') }}" class="nav-btn {% if request.endpoint == 'evidence_log' %}active{% endif %}">Logs</a>
+
+      <!-- Logout -->
+      <a href="{{ url_for('logout') }}" class="nav-btn logout-btn">Logout</a>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for cat,msg in messages %}
+          <div class="alert {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Page Content -->
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- JS for dropdowns + flash fadeout -->
+  <script>
+    // Dropdown toggle on hover
+    document.querySelectorAll('.dropdown').forEach(drop => {
+      drop.addEventListener('mouseenter', () => drop.querySelector('.dropdown-content').style.display = 'block');
+      drop.addEventListener('mouseleave', () => drop.querySelector('.dropdown-content').style.display = 'none');
+    });
+
+    // Auto-hide flash messages
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(el => el.style.display = 'none');
+    }, 3000);
+  </script>
+
+  <script>
+  // Enable click-based dropdown toggle
+  document.querySelectorAll('.dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = btn.parentElement;
+      dropdown.classList.toggle('open');
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
